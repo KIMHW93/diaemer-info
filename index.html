@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1C3A4A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>다이아메르 양양 — 고객 안내문</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+  html { font-size: 16px; }
+
+  body {
+    font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: #F2F2F0;
+    color: #1a1a1a;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+    overflow-x: hidden;
+  }
+
+  /* ── 헤더 ─────────────────────────────────────── */
+  .header {
+    background: #1C3A4A;
+    padding: env(safe-area-inset-top, 0px) 0 0;
+  }
+  .header-inner {
+    padding: 28px 20px 24px;
+    text-align: center;
+  }
+  .header-badge {
+    display: inline-block;
+    border: 1px solid rgba(200,169,106,0.6);
+    color: #C8A96A;
+    font-size: 10px;
+    letter-spacing: 4px;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+  .header-title {
+    font-size: clamp(20px, 5vw, 24px);
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .header-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── 요약 카드 ─────────────────────────────────── */
+  .summary-wrap {
+    background: #1C3A4A;
+    padding: 0 16px 20px;
+  }
+  .summary-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(200,169,106,0.25);
+    border-radius: 10px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 12px;
+  }
+  .summary-item { display: flex; flex-direction: column; gap: 3px; }
+  .summary-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #C8A96A;
+    font-weight: 700;
+  }
+  .summary-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  /* ── 컨테이너 ──────────────────────────────────── */
+  .container {
+    padding: 16px 12px 80px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ── 섹션 라벨 ─────────────────────────────────── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 18px 0 8px;
+    padding: 0 2px;
+  }
+  .section-label span {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: #999;
+    white-space: nowrap;
+  }
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #DDDDD5;
+  }
+
+  /* ── 공지 항목 ─────────────────────────────────── */
+  .notice-item {
+    background: #FFFFFF;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    border: 1px solid #EBEBEB;
+    /* 터치 피드백 */
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+  .notice-item:active {
+    transform: scale(0.99);
+  }
+  .notice-row {
+    display: flex;
+    align-items: stretch;
+    min-height: 52px;
+  }
+  .notice-num {
+    background: #1C3A4A;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 800;
+    width: 38px;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0;
+  }
+  .notice-content {
+    padding: 14px 14px 14px 15px;
+    flex: 1;
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: #2A2A2A;
+    min-width: 0;
+  }
+  .notice-content strong {
+    color: #1C3A4A;
+    font-weight: 700;
+  }
+
+  /* 중요 항목 */
+  .notice-item.important .notice-num { background: #B8860B; }
+  .notice-item.important .notice-content { background: #FDFAF3; }
+
+  /* 경고 항목 */
+  .notice-item.alert .notice-num { background: #B91C1C; }
+  .notice-item.alert .notice-content { background: #FEF9F9; }
+  .notice-item.alert .notice-content strong { color: #B91C1C; }
+
+  /* ── 전화번호 박스 ─────────────────────────────── */
+  .phone-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    background: #EBE6DC;
+    border-radius: 6px;
+    padding: 7px 16px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #1C3A4A;
+    letter-spacing: 1px;
+    /* 모바일 전화 클릭 */
+    text-decoration: none;
+    -webkit-user-select: none;
+  }
+
+  /* ── 태그 ──────────────────────────────────────── */
+  .tag {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .tag-warn  { background: #FEF3C7; color: #92400E; }
+  .tag-alert { background: #FEE2E2; color: #991B1B; }
+
+  /* ── 푸터 ──────────────────────────────────────── */
+  .footer {
+    background: #1C3A4A;
+    padding: 22px 20px calc(env(safe-area-inset-bottom, 0px) + 22px);
+    text-align: center;
+  }
+  .footer-name {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #C8A96A;
+    margin-bottom: 5px;
+  }
+  .footer-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── 반응형 ────────────────────────────────────── */
+  @media (max-width: 360px) {
+    .notice-content { font-size: 13.5px; padding: 12px 12px 12px 13px; }
+    .summary-value  { font-size: 13px; }
+    .phone-box      { font-size: 15px; }
+  }
+  @media (min-width: 600px) {
+    .container { padding: 20px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-badge">GUEST INFORMATION</div>
+    <div class="header-title">고객 안내문</div>
+    <div class="header-sub">다이아메르 양양 바이 스테이네오</div>
+  </div>
+
+  <!-- 핵심 요약 카드 -->
+  <div class="summary-wrap">
+    <div class="summary-card">
+      <div class="summary-item">
+        <span class="summary-label">CHECKOUT</span>
+        <span class="summary-value">오전 11:00</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">FRONT DESK</span>
+        <span class="summary-value">24시간 운영</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">WI-FI</span>
+        <span class="summary-value">객실번호 입력</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">PHONE</span>
+        <span class="summary-value">033-673-3094</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 본문 -->
+<div class="container">
+
+  <div class="section-label"><span>체크아웃 · 프런트</span></div>
+
+  <div class="notice-item important">
+    <div class="notice-row">
+      <div class="notice-num">01</div>
+      <div class="notice-content">
+        <strong>체크아웃은 오전 11시까지</strong>입니다. 연장을 원하시면 프런트로 사전 문의 부탁드립니다.<br>
+        <span class="tag tag-warn">15시 이후 연장 시 1박 요금 발생</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">02</div>
+      <div class="notice-content">
+        프런트데스크는 <strong>24시간 운영</strong>됩니다. 불편사항·요청사항은 언제든지 연락해 주세요.<br>
+        <a class="phone-box" href="tel:0336733094">📞 033-673-3094</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label"><span>객실 이용</span></div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">03</div>
+      <div class="notice-content">
+        <strong>Wi-Fi는 객실번호</strong>로 연결하세요. 안 되면 TV 뒤 셋톱박스에서 ID·Password를 확인해 주세요.
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">04</div>
+      <div class="notice-content">
+        객실별 <strong>전기온수기</strong>가 설치되어 있습니다. 고온 온수는 <strong>15~20분</strong> 사용 가능하며, 재가열에 약 <strong>10분</strong>이 소요됩니다. 양해 부탁드립니다.
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">05</div>
+      <div class="notice-content">
+        <strong>OTT 서비스</strong>는 개인 계정으로 이용 가능합니다.
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">06</div>
+      <div class="notice-content">
+        기본 제공 물품 외 <strong>추가 요청 시 별도 비용</strong>이 발생할 수 있습니다.
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">07</div>
+      <div class="notice-content">
+        지역 특성상 <strong>테라스 이용 시 벌레 유입</strong>에 유의해 주세요.
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">10</div>
+      <div class="notice-content">
+        <strong>에어컨·바닥난방</strong>은 객실키 삽입 후 이용 가능합니다. 화장실 옆 컨트롤패널을 이용해 주세요. (에어컨·난방 각각 별도 패널)
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">11</div>
+      <div class="notice-content">
+        객실 내 수저·그릇·냄비 등은 제공되지 않습니다. <strong>전자레인지는 1층 키즈랜드</strong>에 있습니다.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label"><span>규정 안내</span></div>
+
+  <div class="notice-item alert">
+    <div class="notice-row">
+      <div class="notice-num">08</div>
+      <div class="notice-content">
+        호텔 내 전 구역은 <strong>금연</strong>입니다.<br>
+        <span class="tag tag-alert">흡연 적발 시 200,000원 청구</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-item alert">
+    <div class="notice-row">
+      <div class="notice-num">09</div>
+      <div class="notice-content">
+        <strong>전원 공급용 별도 카드키</strong>가 비치되어 있으며, 체크인 시 <strong>1장</strong>이 제공됩니다.<br>
+        <span class="tag tag-alert">카드키 분실 시 10,000원 부과</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label"><span>주차 · 분리수거</span></div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">12</div>
+      <div class="notice-content">
+        주차는 호텔 내 <strong>지하주차장</strong>을 이용해 주세요. 만차 시 <strong>근처 공영주차장</strong>을 이용 부탁드립니다.
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-item">
+    <div class="notice-row">
+      <div class="notice-num">13</div>
+      <div class="notice-content">
+        퇴실 전 객실 내 쓰레기는 <strong>B1층 분리수거장</strong>에 처리 부탁드립니다.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 푸터 -->
+<div class="footer">
+  <div class="footer-name">DIAEMER YANGYANG</div>
+  <div class="footer-sub">다이아메르 양양 바이 스테이네오 · BY STAYNEO</div>
+</div>
+
+</body>
+</html>
